@@ -33,4 +33,4 @@ def main(name='Boy', difficulty='easy'):
 
 
 if __name__ == "__main__":
-    main(name='SuperMario_ce', difficulty='hard')
+    main(name='Torus', difficulty='easy')
