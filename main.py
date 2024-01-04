@@ -1,6 +1,13 @@
 import cv2
+import numpy as np
 
 from ReadFiles import read_bounding_box, read_frames
+from ImageProcess import draw_bounding_box
+
+
+def iou(bbox1, bbox2):
+    bbox1 = np.array(bbox1)
+    bbox2 = np.array(bbox2)
 
 
 def main(name='Boy', difficulty='easy'):
@@ -19,15 +26,12 @@ def main(name='Boy', difficulty='easy'):
 
     # Update tracker
     for index, frame in enumerate(frames):
-        _, bbox = tracker.update(frame)
         print(index + 1)
-        print(bboxes[index + 1])
-        print(bbox)
-        print()
 
-        p1 = (int(bbox[0]), int(bbox[1]))
-        p2 = (int(bbox[0] + bbox[2]), int(bbox[1] + bbox[3]))
-        cv2.rectangle(frame, p1, p2, (255, 0, 0), 2, 1)
+        _, bbox = tracker.update(frame)
+
+        draw_bounding_box(frame, bboxes[index + 1], bbox, (0, 0, 255),(255, 0, 0))
+
         cv2.imshow('frame', frame)
         cv2.waitKey(1)
 
