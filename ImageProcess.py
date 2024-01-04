@@ -14,5 +14,28 @@ def draw_bounding_box(frame, bbox_y, bbox_p, color_y, color_p):
     return frame
 
 
-def iou():
-    pass
+def calculate_iou(box1, box2):
+    # box format: [x, y, w, h]
+    x1, y1, w1, h1 = box1
+    x2, y2, w2, h2 = box2
+
+    # Calculate the coordinates of the intersection rectangle
+    x_intersection = max(x1, x2)
+    y_intersection = max(y1, y2)
+    w_intersection = min(x1 + w1, x2 + w2) - x_intersection
+    h_intersection = min(y1 + h1, y2 + h2) - y_intersection
+
+    # Calculate the area of intersection rectangle
+    area_intersection = max(0, w_intersection) * max(0, h_intersection)
+
+    # Calculate the area of both bounding boxes
+    area_box1 = w1 * h1
+    area_box2 = w2 * h2
+
+    # Calculate the Union (sum of both areas - intersection)
+    area_union = area_box1 + area_box2 - area_intersection
+
+    # Calculate IoU
+    iou = area_intersection / area_union
+
+    return iou

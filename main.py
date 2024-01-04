@@ -1,13 +1,7 @@
 import cv2
-import numpy as np
 
 from ReadFiles import read_bounding_box, read_frames
-from ImageProcess import draw_bounding_box
-
-
-def iou(bbox1, bbox2):
-    bbox1 = np.array(bbox1)
-    bbox2 = np.array(bbox2)
+from ImageProcess import draw_bounding_box, calculate_iou
 
 
 def main(name='Boy', difficulty='easy'):
@@ -28,13 +22,16 @@ def main(name='Boy', difficulty='easy'):
     for index, frame in enumerate(frames):
         print(index + 1)
 
-        _, bbox = tracker.update(frame)
+        _, bbox_p = tracker.update(frame)
+        bbox_y = bboxes[index + 1]
 
-        draw_bounding_box(frame, bboxes[index + 1], bbox, (0, 0, 255),(255, 0, 0))
+        draw_bounding_box(frame, bbox_y, bbox_p, (0, 0, 255), (255, 0, 0))
+        iou = calculate_iou(bbox_y, bbox_p)
+        print(f'iou: {iou}')
 
         cv2.imshow('frame', frame)
         cv2.waitKey(1)
 
 
 if __name__ == "__main__":
-    main(name='Torus', difficulty='easy')
+    main(name='Cup', difficulty='easy')
